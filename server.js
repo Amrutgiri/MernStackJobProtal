@@ -13,6 +13,7 @@ import connectDB from "./config/db.js";
 //route imports
 import authRoutes from "./routes/authRoutes.js";
 import testRoutes from "./routes/testRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 
 // rest Object
@@ -32,6 +33,7 @@ app.use(morgan('dev'));
 // Route
 app.use('/api/v1/test', testRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/user', userRoutes);
 
 // validation middleware
 app.use(errorMiddleware);

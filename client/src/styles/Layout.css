@@ -1,0 +1,39 @@
+.sidebar {
+    height: 100vh !important;
+    border-radius: 8px;
+    background-color: rgb(116, 6, 199);
+    box-shadow: 0 0 2px gray;
+    color: white;
+}
+
+.logo h6 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 20px 0px;
+}
+
+.menu-item {
+    margin-top: 30px;
+}
+
+.menu-item a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.menu-item i {
+    font-size: 1.2rem;
+    margin: 0 15px;
+    color: white;
+}
+
+.active {
+    background-image: linear-gradient(to right, rgb(255, 255, 255), rgb(116, 6, 199));
+    padding: 15px;
+}
+
+.active a,
+.active i {
+    color: rgb(11, 4, 112);
+}

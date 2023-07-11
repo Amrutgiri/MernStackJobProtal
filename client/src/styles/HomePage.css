@@ -1,0 +1,40 @@
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 10;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.jpcard {
+    width: 500px !important;
+}
+
+.content {
+    position: fixed;
+    top: 250px;
+    left: 70%;
+    right: 0;
+    background-color: rgba(95, 70, 70, 0.38);
+    color: white;
+    width: 105%;
+    padding: 20px;
+}
+
+.myBtn {
+    width: 200px;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 10px 40px;
+    font-size: 18px;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.myBtn:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}

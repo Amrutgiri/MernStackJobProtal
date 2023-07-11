@@ -1,8 +1,22 @@
 import userModel from "../models/userModel.js";
 export const authController = async (req, res, next) => {
 
-    const { name, email, password } = req.body;
-    const user = await userModel.create({ name, email, password });
+    const { name, email, password, lastname } = req.body;
+
+    if (!name) {
+        next("Name is required");
+    }
+    if (!email) {
+        next("Email is required");
+    }
+    if (!password) {
+        next("Password is required");
+    }
+    const existingEmail = await userModel.findOne({ email });
+    if (existingEmail) {
+        next("User Already Exists ! Please Login");
+    }
+    const user = await userModel.create({ name, email, password, lastname });
 
     const token = user.createJWT();
 

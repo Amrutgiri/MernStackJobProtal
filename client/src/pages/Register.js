@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import InputForm from './../components/shared/InputForm.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { hideLoading, showLoading } from '../redux/features/alertSlice.js';
+import axios from 'axios';
+import Spinner from '../components/shared/Spinner.js';
+import { toast } from 'react-toastify';
 const Register = () => {
 
     const [name, setName] = useState('');
@@ -8,51 +13,58 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const { loading } = useSelector(state => state.alerts)
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     // form
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            console.log(name, email, password, lastname);
+            if (!name || !email || !password) {
+                return toast.error("Please Provide all fields");
+            }
+            dispatch(showLoading());
+            const { data } = await axios.post('/api/v1/auth/register', { name, lastname, email, password });
+            dispatch(hideLoading());
+            if (data.success) {
+                toast.success("Registered Successfully");
+                navigate('/dashboard');
+            }
+
         } catch (error) {
+            dispatch(hideLoading());
+            toast.error("Invalid Form data Please Try Again");
             console.log(error);
         }
     }
 
     return (
         <>
-            <div className='form-container'>
-                <form onSubmit={handleSubmit}>
-                    <div className='card'>
-                        <div className='card-header'>
-                            <img src='/assets/images/logo.png' alt='Logo' className='logo mb-2 ' />
-                        </div>
-                        <div className='card-body'>
-                            <div className="mb-3 ">
-                                <label htmlFor="name" className="form-label">Name</label>
-                                <input type="text" className="form-control" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+            {loading ? (<Spinner />) : (
+                <div className='form-container'>
+                    <form onSubmit={handleSubmit}>
+                        <div className='card'>
+                            <div className='card-header'>
+                                <img src='/assets/images/logo.png' alt='Logo' className='logo mb-2 ' />
                             </div>
-                            <div className="mb-3 ">
-                                <label htmlFor="lastname" className="form-label">Last Name</label>
-                                <input type="text" className="form-control" name="lastname" value={lastname} onChange={(e) => setLastname(e.target.value)} />
-                            </div>
-                            <div className="mb-3 ">
-                                <label htmlFor="email" className="form-label">Email address</label>
-                                <input type="email" className="form-control" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="password" className="form-label">Password</label>
-                                <input type="password" className="form-control" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                            </div>
+                            <div className='card-body'>
+                                <InputForm htmlFor="name" labelText={"Name"} type={"text"} name={'name'} value={name} handleChange={(e) => setName(e.target.value)} />
+                                <InputForm htmlFor="lastname" labelText={"Last Name"} type={"text"} name={'lastname'} value={lastname} handleChange={(e) => setLastname(e.target.value)} />
+                                <InputForm htmlFor="email" labelText={"Email"} type={"email"} name={'email'} value={email} handleChange={(e) => setEmail(e.target.value)} />
+                                <InputForm htmlFor="password" labelText={"Password"} type={"password"} name={'password'} value={password} handleChange={(e) => setPassword(e.target.value)} />
 
-                            <div className='d-flex justify-content-between'>
-                                <p>Already Registered ? <Link to={'/login'}>Login</Link></p>
-                                <button type="submit" className="btn btn-primary float-end">Register</button>
+
+                                <div className='d-flex justify-content-between'>
+                                    <p>Already Registered ? <Link to={'/login'}>Login</Link></p>
+                                    <button type="submit" className="btn btn-primary float-end">Register</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </form>
-            </div>
+                    </form>
+                </div>
+            )}
 
         </>
     )
